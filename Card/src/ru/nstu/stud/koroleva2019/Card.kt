@@ -1,6 +1,7 @@
 package ru.nstu.stud.koroleva2019
 
-class Card(rank: Int, suit: Suits) : Comparable<Card?> {
+class Card(rank: Int = 2, suit: Suits = Suits.CLUBS) : Comparable<Card?> {
+    //ругается на названия констант, а как мне тогда константы называть? м?
     private val MIN_RANK = 2
     private val MAX_RANK = 15
 
@@ -52,13 +53,11 @@ class Card(rank: Int, suit: Suits) : Comparable<Card?> {
 
     override fun toString() = "${toStringRank()} $suit"
 
-    override fun equals(other: Any?) =
-        (other is Card) && (this.rank == other.rank) && (this.suit == other.suit)
+    override fun equals(other: Any?) = (other is Card) && (this.rank == other.rank) && (this.suit == other.suit)
 
     override fun hashCode() = 10 * rank + suit.ordinal
 
-    fun isStronger(card: Card?) =
-        (card != null) && (suit == card.suit) && (rank > card.rank)
+    fun isStronger(card: Card?) = (card != null) && (suit == card.suit) && (rank > card.rank)
 
     override fun compareTo(other: Card?): Int {
         return when {
@@ -68,5 +67,13 @@ class Card(rank: Int, suit: Suits) : Comparable<Card?> {
         }
     }
 
-    //public static int compare(CardB card1, CardB card2) 
+    companion object JStaticCompare {
+        fun compare(card1: Card?, card2: Card?): Int {
+            return when {
+                (card1 == null) || (card2 == null) -> -1
+                card1.rank == card2.rank -> card1.suit.ordinal - card2.suit.ordinal
+                else -> card1.rank - card2.rank
+            }
+        }
+    }
 }
